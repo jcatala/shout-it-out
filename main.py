@@ -60,6 +60,7 @@ if __name__ == "__main__":
 
     if args['file'] == None:
         send_message_default(bot)
+        exit(0)
     send_message_byfile(bot,args['file'])
 
 
