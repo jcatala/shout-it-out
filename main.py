@@ -26,7 +26,7 @@ def get_chat_id(bot):
 def send_message_byfile(bot, file_name):
     chat_id = get_chat_id(bot)
     with open(file_name, "r") as a:
-        content = a.read()
+        content = a.read().strip('\n')
     payload = textwrap.fill(content,256).split('\n')
     for k in payload:
         if k != "":
@@ -36,10 +36,17 @@ def send_message_byfile(bot, file_name):
 def send_message_default(bot):
     chat_id = get_chat_id(bot)
     line_list = []
-    for line in sys.stdin:
-        line_list += textwrap.fill(line,256).split('\n') 
-    for line in line_list:
-        bot.send_message(chat_id = chat_id, text = str(line))
+    try:
+        for line in sys.stdin:
+            line_list = textwrap.fill(line,256).split('\n') 
+            if line != "":
+                bot.send_message(chat_id = chat_id, text = str(line))
+    except KeyboardInterrupt:
+        print("Exiting...")
+        exit(0)
+    #for line in line_list:
+    #    if line != "":
+    #        bot.send_message(chat_id = chat_id, text = str(line))
     return True
 
 if __name__ == "__main__":
