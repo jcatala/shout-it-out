@@ -33,13 +33,16 @@ def send_message_byfile(bot, file_name):
             bot.send_message(chat_id = chat_id, text = str(k))
     return True
 
-def send_message_default(bot):
+def send_message_default(bot,args):
     chat_id = get_chat_id(bot)
     line_list = []
+    verbose = args['verbose']
     try:
         for line in sys.stdin:
             line_list = textwrap.fill(line,256).split('\n') 
             if line != "":
+                if verbose:
+                    print(str(line))
                 bot.send_message(chat_id = chat_id, text = str(line))
     except KeyboardInterrupt:
         print("Exiting...")
@@ -66,7 +69,7 @@ if __name__ == "__main__":
     bot = telegram.Bot(token = str(bot_api_key))
 
     if args['file'] == None:
-        send_message_default(bot)
+        send_message_default(bot,args)
         exit(0)
     send_message_byfile(bot,args['file'])
 
