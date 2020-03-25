@@ -15,6 +15,7 @@ def check_args():
     parser.add_argument('-c', '--config',help="Full path to config file (default is ~/.SIO.conf")
     parser.add_argument('-f', '--file',help="Send a text file (default is stdin)")
     parser.add_argument('-v', '--verbose',required = False, help="Turn on the verbose mode", action="store_true",default=False)
+    parser.add_argument('-F', '--filter',required = False, help="Add a filter before sending the message (string: default: None)",default=False)
     return vars(parser.parse_args())
 
 
@@ -43,6 +44,10 @@ def send_message_default(bot,args):
             if line != "":
                 if verbose:
                     print(str(line))
+                if args['filter'] != None:
+                    if args['filter'] in line:
+                        bot.send_message(chat_id = chat_id, text = str(line))
+                        continue
                 bot.send_message(chat_id = chat_id, text = str(line))
     except KeyboardInterrupt:
         print("Exiting...")
