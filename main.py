@@ -38,16 +38,19 @@ def send_message_default(bot,args):
     chat_id = get_chat_id(bot)
     line_list = []
     verbose = args['verbose']
+    if verbose: print(args)
     try:
         for line in sys.stdin:
             line_list = textwrap.fill(line,256).split('\n') 
             if line != "":
                 if verbose:
-                    print(str(line))
-                if args['filter'] != None:
+                    print("Sending: {}".format( str(line) ) )
+                if args['filter'] != False:
+                    if verbose:
+                        print("Using filter: '{}'...".format(args['filter']))
                     if args['filter'] in line:
                         bot.send_message(chat_id = chat_id, text = str(line))
-                        continue
+                    continue
                 bot.send_message(chat_id = chat_id, text = str(line))
     except KeyboardInterrupt:
         print("Exiting...")
@@ -56,6 +59,7 @@ def send_message_default(bot,args):
     #    if line != "":
     #        bot.send_message(chat_id = chat_id, text = str(line))
     return True
+
 
 if __name__ == "__main__":
     args = check_args()
