@@ -35,7 +35,7 @@ def send_message_byfile(bot, file_name):
     return True
 
 def send_message_default(bot,args):
-    chat_id = get_chat_id(bot)
+    #chat_id = get_chat_id(bot)
     line_list = []
     verbose = args['verbose']
     if verbose: print(args)
@@ -43,6 +43,7 @@ def send_message_default(bot,args):
         for line in sys.stdin:
             line_list = textwrap.fill(line,256).split('\n') 
             if line != "":
+                chat_id = get_chat_id(bot)
                 if verbose:
                     print("Sending: {}".format( str(line) ) )
                 if args['filter'] != False:
