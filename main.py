@@ -43,7 +43,11 @@ def send_message_default(bot,args):
         for line in sys.stdin:
             line_list = textwrap.fill(line,256).split('\n') 
             if line != "":
-                chat_id = get_chat_id(bot)
+                try:
+                    chat_id = get_chat_id(bot)
+                except:
+                    if verbose:print("Error getting the chat_id")
+                    continue
                 if verbose:
                     print("Sending: {}".format( str(line) ) )
                 if args['filter'] != False:
