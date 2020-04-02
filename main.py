@@ -39,12 +39,14 @@ def send_message_default(bot,args):
     line_list = []
     verbose = args['verbose']
     if verbose: print(args)
+    chat_id = ""
     try:
         for line in sys.stdin:
             line_list = textwrap.fill(line,256).split('\n') 
             if line != "":
                 try:
-                    chat_id = get_chat_id(bot)
+                    new_chat_id = get_chat_id(bot)
+                    chat_id = new_chat_id
                 except:
                     if verbose:print("Error getting the chat_id")
                     continue
