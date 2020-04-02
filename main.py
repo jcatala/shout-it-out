@@ -49,7 +49,7 @@ def send_message_default(bot,args):
                     chat_id = new_chat_id
                 except:
                     if verbose:print("Error getting the chat_id")
-                    continue
+                    pass
                 if verbose:
                     print("Sending: {}".format( str(line) ) )
                 if args['filter'] != False:
