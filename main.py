@@ -24,8 +24,11 @@ def get_chat_id(bot):
     return chat_id
 
 
-def send_message_byfile(bot, file_name):
-    chat_id = get_chat_id(bot)
+def send_message_byfile(bot, file_name,chat_id = ""):
+    try:
+        chat_id = get_chat_id(bot)
+    except:
+        print("Error getting chat id, using {} from the config file".format(chat_id))
     with open(file_name, "r") as a:
         content = a.read().strip('\n')
     payload = textwrap.fill(content,256).split('\n')
@@ -34,12 +37,11 @@ def send_message_byfile(bot, file_name):
             bot.send_message(chat_id = chat_id, text = str(k))
     return True
 
-def send_message_default(bot,args):
+def send_message_default(bot,args,chat_id = ""):
     #chat_id = get_chat_id(bot)
     line_list = []
     verbose = args['verbose']
     if verbose: print(args)
-    chat_id = ""
     try:
         for line in sys.stdin:
             line_list = textwrap.fill(line,256).split('\n') 
@@ -48,7 +50,7 @@ def send_message_default(bot,args):
                     new_chat_id = get_chat_id(bot)
                     chat_id = new_chat_id
                 except:
-                    if verbose:print("Error getting the chat_id")
+                    if verbose:print("Error getting the chat_id, using {} from config file".format(chat_id))
                     pass
                 if verbose:
                     print("Sending: {}".format( str(line) ) )
@@ -67,6 +69,11 @@ def send_message_default(bot,args):
     #        bot.send_message(chat_id = chat_id, text = str(line))
     return True
 
+def write_chatid_2config(chat_id, config, path):
+    config['DEFAULT']['saved_chat_id'] = str(chat_id)
+    with open(path, "w") as a:
+        config.write(a)
+    return 1
 
 if __name__ == "__main__":
     args = check_args()
@@ -80,14 +87,25 @@ if __name__ == "__main__":
     # Get the config and api key
     bot_api_key = config['DEFAULT']['apikey']
     if args['verbose'] == True: print("using Api key {}".format(bot_api_key))
-
+    # Check if exist a chat_id to dont over ask for it
     # get the chat_id
-    bot = telegram.Bot(token = str(bot_api_key))
+    bot = telegram.Bot(token=str(bot_api_key))
+    chat_id = 0
+    try:
+        chat_id = config['DEFAULT']['saved_chat_id']
+        print("Chat id fetched from the config file: {} ".format(chat_id))
+    except:
+        if args['verbose']: print("there's not a saved chat_id, getting one and writing it down")
+    if chat_id == 0:
+        chat_id = get_chat_id(bot)
+        write_chatid_2config(chat_id, config, config_location)
+        if args['verbose']: print("Chat id saved on config file!")
+
 
     if args['file'] == None:
-        send_message_default(bot,args)
+        send_message_default(bot,args,chat_id)
         exit(0)
-    send_message_byfile(bot,args['file'])
+    send_message_byfile(bot,args['file'],chat_id)
 
 
 
