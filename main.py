@@ -12,7 +12,7 @@ import telegram
 
 def check_args():
     parser = argparse.ArgumentParser(description = "Simple Shout-it-out telegram notificator")
-    parser.add_argument('-c', '--config',help="Full path to config file (default is ~/.SIO.conf")
+    parser.add_argument('-c', '--config',help="Full path to config file (default is ~/.sio.conf")
     parser.add_argument('-i', '--infile',help="Send a text file (default is stdin)")
     parser.add_argument('-v', '--verbose',required = False, help="Turn on the verbose mode", action="store_true",default=False)
     parser.add_argument('-F', '--filter',required = False, help="Add a filter before sending the message (string: default: None)",default=False)
@@ -116,7 +116,7 @@ def write_chatid_2config(chat_id, config, path):
 if __name__ == "__main__":
     args = check_args()
     config = configparser.ConfigParser()
-    config_location = str(Path.home()) + "/.SIO.conf"
+    config_location = str(Path.home()) + "/.sio.conf"
     print(config)
     if args['config'] != None:
         config_location = args['config']
