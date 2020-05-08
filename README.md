@@ -30,7 +30,7 @@ apikey = YOUR API KEY
 # Usage 
 
 ```
-usage: main.py [-h] [-c CONFIG] [-f FILE] [-v]
+usage: sio-notification.py [-h] [-c CONFIG] [-i INFILE] [-v] [-F FILTER] [-f]
 
 Simple Shout-it-out telegram notificator
 
@@ -38,8 +38,13 @@ optional arguments:
   -h, --help            show this help message and exit
   -c CONFIG, --config CONFIG
                         Full path to config file (default is ~/.SIO.conf
-  -f FILE, --file FILE  Send a text file (default is stdin)
+  -i INFILE, --infile INFILE
+                        Send a text file (default is stdin)
   -v, --verbose         Turn on the verbose mode
+  -F FILTER, --filter FILTER
+                        Add a filter before sending the message (string: default: None)
+  -f, --follow          Send one line at a time
+
 
 ```
 
@@ -56,6 +61,6 @@ cat /etc/passwd | sio-notification.py
 ```
 ## To check for OOB via dns:
 
-tail -f bind.log | sio-notification.py
+tail -f bind.log | sio-notification.py -v -f
 
 ```
