@@ -18,6 +18,8 @@ def check_args():
     parser.add_argument('-F', '--filter',required = False, help="Add a filter before sending the message (string: default: None)",default=False)
     parser.add_argument('-f', '--follow', required=False,
                         help="Send one line at a time", action="store_true", default=False)
+    parser.add_argument('-m', '--markdown', required=False,
+                        help="Force markdown on the entire message, if is not, do it by yourself adding backquotes", action="store_true", default=False)
     return vars(parser.parse_args())
 
 
@@ -79,7 +81,9 @@ def send_message_default(bot, args, chat_id = ""):
     verbose = args['verbose']
     
     if verbose: print(args)
-    whole_message = "```\n"
+    whole_message = ""
+    if args['markdown']:
+        whole_message = "```\n"
     # Get the chat id
     try:
         new_chat_id = get_chat_id(bot)
@@ -94,7 +98,8 @@ def send_message_default(bot, args, chat_id = ""):
         whole_message = "Error with {}".format(e)
         print(whole_message)
         return False
-    whole_message += "\n```"
+    if args['markdown']:
+        whole_message += "\n```"
     if verbose:
         print("Sending the following message: \n{}".format(whole_message))
     bot.send_message(chat_id = chat_id,text = whole_message, parse_mode=telegram.ParseMode.MARKDOWN)

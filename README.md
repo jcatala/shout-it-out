@@ -30,7 +30,7 @@ apikey = YOUR API KEY
 # Usage 
 
 ```
-usage: sio-notification.py [-h] [-c CONFIG] [-i INFILE] [-v] [-F FILTER] [-f]
+usage: sio-notification.py [-h] [-c CONFIG] [-i INFILE] [-v] [-F FILTER] [-f] [-m]
 
 Simple Shout-it-out telegram notificator
 
@@ -44,7 +44,7 @@ optional arguments:
   -F FILTER, --filter FILTER
                         Add a filter before sending the message (string: default: None)
   -f, --follow          Send one line at a time
-
+  -m, --markdown        Force markdown on the entire message, if is not, do it by yourself adding backquotes
 
 ```
 
@@ -61,6 +61,6 @@ cat /etc/passwd | sio-notification.py
 ```
 ## To check for OOB via dns:
 
-tail -f bind.log | sio-notification.py -v -f
+tail -f bind.log | sio-notification.py -v -f -m
 
 ```
