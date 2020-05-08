@@ -58,7 +58,8 @@ def send_message_follow(bot,args,chat_id = ""):
                     pass
                 if verbose:
                     print("Sending: {}".format( str(line) ) )
-                line = """`{}`""".format(line)
+                if args['markdown']:
+                    line = """`{}`""".format(line)
                 if args['filter'] != False:
                     if verbose:
                         print("Using filter: '{}'...".format(args['filter']))
